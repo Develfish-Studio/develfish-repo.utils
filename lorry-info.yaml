@@ -1,0 +1,18 @@
+name: develfish-repo.utils
+luau:
+  aliases:
+    root: .
+  globals:
+    - array_mt
+    - json
+    - yaml
+    - engine
+    - shell
+    - template
+    - variables
+dependencies:
+  develfish-repo.testing:
+    uri: git@github.com:Develfish-Studio/develfish-repo-testing.git
+actions:
+  test:
+    path: actions/test
