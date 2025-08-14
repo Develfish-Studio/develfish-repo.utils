@@ -20,4 +20,12 @@ function Meta:type<T>(object: any, type: any, name: string?)
   return (object::unknown)::T
 end
 
+function Meta:typeof(object: any)
+  local type_name = typeof(object)
+  if type_name == 'table' and object.__type ~= nil then
+    return object.__type
+  end
+  return type_name
+end
+
 return Meta

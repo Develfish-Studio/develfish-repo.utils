@@ -15,7 +15,11 @@ function Lorry:generate(scroll_name: string)
       target_path = config and config.target_path or nil
     }
     local vars = config and config.variables or {}
-    engine:generate(scroll_name, target, vars)
+    if typeof(vars) == 'table' and typeof(vars.unwrap) == 'function' then
+      engine:generate(scroll_name, target, vars:unwrap())
+    else
+      engine:generate(scroll_name, target, vars)
+    end
   end
 end
 
