@@ -130,7 +130,7 @@ function URI:parse_nested(schema: string, st: string)
   error(`Invalid prefix: '{schema}'`)
 end
 
-function URI:parse_jdbc(st: string)
+function URI:parse_jdbc(st: string): URI
   return URI:parse_nested('jdbc', st)
 end
 
