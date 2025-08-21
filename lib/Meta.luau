@@ -2,12 +2,14 @@
 
 local Meta = {}
 
-function Meta:array<T>(array)
+export type Some = {} | number | string | boolean | thread | vector | buffer
+
+function Meta:array<T>(array): T
   setmetatable(array, array_mt)
   return (array::unknown)::T
 end
 
-function Meta:table<T>(array)
+function Meta:table<T>(array): T
   setmetatable(array, {})
   return (array::unknown)::T
 end
