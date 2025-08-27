@@ -1,4 +1,4 @@
-local describe = require("@develfish-repo.testing/lib/describe")
+local describe = require("@lorry.testing/lib/describe")
 local String = require("@root/lib/String")
 
 describe("String Utils") (

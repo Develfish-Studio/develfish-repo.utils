@@ -1,4 +1,4 @@
-local describe = require("@develfish-repo.testing/lib/describe")
+local describe = require("@lorry.testing/lib/describe")
 local Path = require("@root/lib/Path")
 
 describe("Path Utils") (

@@ -1,4 +1,4 @@
-local describe = require("@develfish-repo.testing/lib/describe")
+local describe = require("@lorry.testing/lib/describe")
 local Meta = require("@root/lib/Meta")
 
 describe("Meta Utils") (

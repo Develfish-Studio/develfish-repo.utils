@@ -1,4 +1,4 @@
-name: develfish-repo.utils
+name: lorry.utils
 luau:
   aliases:
     root: .
@@ -11,8 +11,8 @@ luau:
     - template
     - variables
 dependencies:
-  develfish-repo.testing:
-    uri: git@github.com:Develfish-Studio/develfish-repo.testing.git
+  lorry.testing:
+    uri: git@github.com:Develfish-Studio/lorry.testing.git
 actions:
   test:
     path: actions/test

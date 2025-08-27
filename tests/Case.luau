@@ -1,4 +1,4 @@
-local describe = require("@develfish-repo.testing/lib/describe")
+local describe = require("@lorry.testing/lib/describe")
 local Case = require("@root/lib/Case")
 
 describe("Case Utils") (
