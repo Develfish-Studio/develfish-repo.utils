@@ -35,12 +35,13 @@ function Table:deep_copy(obj: any, seen: ({ [any]: {} })?)
 end
 
 function Table:is_table(table)
-  local mt = getmetatable(table)
-  return type(table) == "table" and type(mt) == "table"
+  -- local mt = getmetatable(table)
+  -- return type(table) == "table" and type(mt) == "table"
+  return type(table) == "table"
 end
 
 function Table:is_empty(table)
-  assert(Table:is_table(table))
+  assert(Table:is_table(table), "Actual type: " .. typeof(table))
   return next(table) == nil
 end
 
