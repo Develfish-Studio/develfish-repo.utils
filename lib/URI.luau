@@ -1,6 +1,12 @@
+--!strict
+
 local Meta = require("./Meta")
 
-type URI = {
+local URI = {}
+
+export type URI = typeof(URI)
+
+export type URIProps = {
   schema: string,
   username: string?,
   password: string?,
@@ -9,45 +15,12 @@ type URI = {
   path: string?,
   query: string?,
   fragment: string?,
-
-  with_port: (self: URI, port: string?) -> URI,
-  with_hostname: (self: URI, hostname: string?) -> URI,
-  with_path: (self: URI, path: string?) -> URI,
-  with_query:(self: URI, query: string?) -> URI,
-  with_fragment: (self: URI, fragment: string?) -> URI,
-  with_username: (self: URI, username: string?) -> URI,
-  with_password: (self: URI, password: string?) -> URI,
-
-  resolve: (self: URI, subpath: string) -> URI,
-
-  userinfo: (self: URI) -> string?,
-  authority: (self: URI) -> string?,
-  host: (self: URI) -> string?,
-  query_params: (self: URI) -> table,
-  format: (self: URI) -> string,
-  format_nested: (self: URI, schema: string) -> string,
-  format_jdbc: (self: URI) -> string,
 }
 
-type table = {
-  [any]: any
-}
-
-local URI = {
-  schema = nil,
-  username = nil,
-  password = nil,
-  hostname = nil,
-  port = nil,
-  path = nil,
-  query = nil,
-  fragment = nil,
-}
-
-URI.__index = URI
+export type URIImpl = URI & URIProps
 
 function URI:new(o: any): URI
-  return Meta:type(o, self)
+  return Meta:type(o, self, "URI")
 end
 
 --- Parses a string into URI
@@ -123,7 +96,7 @@ function URI:parse(st: string): URI
   })
 end
 
-function URI:parse_nested(schema: string, st: string)
+function URI:parse_nested(schema: string, st: string): URI
   if st:find(schema .. ':') == 1 then
     return URI:parse(st:sub(#schema + 2))
   end
@@ -134,27 +107,30 @@ function URI:parse_jdbc(st: string): URI
   return URI:parse_nested('jdbc', st)
 end
 
-function URI.userinfo(self: URI): string?
-  if self.username ~= nil and self.password ~= nil then
-    return self.username .. ':' .. self.password
-  elseif self.username ~= nil then
-    return self.username
+function URI:userinfo(): string?
+  local this = self::URIImpl
+  if this.username ~= nil and this.password ~= nil then
+    return this.username .. ':' .. this.password
+  elseif this.username ~= nil then
+    return this.username
   end
   return nil
 end
 
-function URI.host(self: URI): string?
-  if self.hostname ~= nil and self.port ~= nil then
-    return self.hostname .. ':' .. self.port
-  elseif self.hostname ~= nil then
-    return self.hostname
+function URI:host(): string?
+  local this = self::URIImpl
+  if this.hostname ~= nil and this.port ~= nil then
+    return this.hostname .. ':' .. this.port
+  elseif this.hostname ~= nil then
+    return this.hostname
   end
   return nil
 end
 
-function URI.authority(self: URI): string?
-  local host = self:host()
-  local userinfo = self:userinfo()
+function URI:authority(): string?
+  local this = self::URI
+  local host = this:host()
+  local userinfo = this:userinfo()
   if host ~= nil and userinfo ~= nil then
     return userinfo .. '@' .. host
   elseif host ~= nil then
@@ -163,10 +139,11 @@ function URI.authority(self: URI): string?
   return nil
 end
 
-function URI.query_params(self: URI): table
+function URI:query_params(): {[string]: any}
+  local this = self::URIImpl
   local result: { [string]: any } = {}
-  if self.query ~= nil then
-    for item in self.query:gmatch("([^&]+)") do
+  if this.query ~= nil then
+    for item in this.query:gmatch("([^&]+)") do
       if item:find('=') then
         local name, value = item:match("([^=]*)=(.*)")
         result[name::string] = value
@@ -178,94 +155,107 @@ function URI.query_params(self: URI): table
   return result
 end
 
-function URI.format(self: URI): string
+function URI:format(): string
+  local this = self::URIImpl
   local st = ''
-  if self.schema ~= nil then
-    st ..= self.schema .. ':'
+  if this.schema ~= nil then
+    st ..= this.schema .. ':'
   end
-  local authority = self:authority()
+  local authority = this:authority()
   if authority ~= nil then
     st ..= '//' .. authority
   end
-  if self.path ~= nil then
-    st ..= self.path
+  if this.path ~= nil then
+    st ..= this.path
   end
-  if self.query ~= nil then
-    st ..= ('?' .. self.query)
+  if this.query ~= nil then
+    st ..= ('?' .. this.query)
   end
-  if self.fragment ~= nil then
-    st ..= ('#' .. self.fragment)
+  if this.fragment ~= nil then
+    st ..= ('#' .. this.fragment)
   end
   return st
 end
 
-function URI.format_nested(self: URI, schema: string): string
-  return schema .. ':' .. self:format()
+function URI:format_nested(schema: string): string
+  local this = self::URIImpl
+  return schema .. ':' .. this:format()
 end
 
-function URI.format_jdbc(self: URI): string
-  return self:format_nested('jdbc')
+function URI:format_jdbc(): string
+  local this = self::URIImpl
+  return this:format_nested('jdbc')
 end
 
-function URI.with_schema(self: URI, schema: string)
-  self.schema = schema
-  return self
+function URI:with_schema(schema: string)
+  local this = self::URIImpl
+  this.schema = schema
+  return this
 end
 
-function URI.override_schema(self: URI, overrides: table): URI
-  self.schema = overrides[self.schema] or self.schema
-  return self
+function URI:override_schema(overrides: {[string]: string}): URI
+  local this = self::URIImpl
+  this.schema = overrides[this.schema] or this.schema
+  return this
 end
 
-function URI.with_port(self: URI, port: string): URI
-  self.port = port
-  return self
+function URI:with_port(port: string): URI
+  local this = self::URIImpl
+  this.port = port
+  return this
 end
 
-function URI.with_hostname(self: URI, hostname: string): URI
-  self.hostname = hostname
-  return self
+function URI:with_hostname(hostname: string): URI
+  local this = self::URIImpl
+  this.hostname = hostname
+  return this
 end
 
-function URI.with_path(self: URI, path: string?): URI
-  self.path = path
-  return self
+function URI:with_path(path: string?): URI
+  local this = self::URIImpl
+  this.path = path
+  return this
 end
 
-function URI.with_query(self: URI, query: string?): URI
-  self.query = query
-  return self
+function URI:with_query(query: string?): URI
+  local this = self::URIImpl
+  this.query = query
+  return this
 end
 
-function URI.with_fragment(self: URI, fragment: string?): URI
-  self.fragment = fragment
-  return self
+function URI:with_fragment(fragment: string?): URI
+  local this = self::URIImpl
+  this.fragment = fragment
+  return this
 end
 
-function URI.with_username(self: URI, username: string?): URI
-  self.username = username
-  return self
+function URI:with_username(username: string?): URI
+  local this = self::URIImpl
+  this.username = username
+  return this
 end
 
-function URI.with_password(self: URI, password: string?): URI
-  self.password = password
-  return self
+function URI:with_password(password: string?): URI
+  local this = self::URIImpl
+  this.password = password
+  return this
 end
 
-function URI.resolve(self: URI, subpath: string): URI
+function URI:resolve(subpath: string): URI
+  local this = self::URIImpl
   if subpath == nil then
-    return self:with_path(nil)
+    return this:with_path(nil)
   end
   if subpath:find('^/') then
-    return self:with_path(subpath)
+    return this:with_path(subpath)
   end
-  if self.path == '' or self.path == nil then
-    return self:with_path(subpath)
+  if this.path == '' or this.path == nil then
+    return this:with_path(subpath)
   end
-  if self.path:find('/$') then
-    return self:with_path(self.path .. subpath)
+  if this.path:find('/$') then
+    return this:with_path(this.path .. subpath)
   end
-  return self:with_path(self.path .. '/' .. subpath)
+  return this:with_path(this.path .. '/' .. subpath)
 end
 
 return URI

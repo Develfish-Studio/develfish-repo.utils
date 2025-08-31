@@ -53,16 +53,40 @@ function Meta:merge(...: {}?): {}
   return merged
 end
 
-function Meta:append(one: {}?): ({}) -> {}
-  return function(another: {}?): {}
-    return Meta:merge(another, one)
+function Meta:append<P, Q>(one: (P & {})?): ((Q & {})?) -> P & Q
+  return function(another: (Q & {})?): (P & Q & {})
+    return Meta:merge(another, one)::(P & Q & {})
   end
 end
 
-function Meta:prepend(one: {}?): ({}) -> {}
-  return function(another: {}?): {}
-    return Meta:merge(one, another)
+function Meta:prepend<P, Q>(one: (P & {})?): ((Q & {})?) -> {}
+  return function(another: (Q & {})?): (P & Q & {})
+    return Meta:merge(one, another)::(P & Q & {})
   end
+end
+
+function Meta:merge2<P, Q>(
+  one: (P & {})?,
+  two: (Q & {})?
+): P & Q & {}
+  return Meta:merge(one, two)::(P & Q & {})
+end
+
+function Meta:merge3<P, Q, R>(
+  one: (P & {})?,
+  two: (Q & {})?,
+  three: (R & {})?
+): P & Q & {}
+  return Meta:merge(one, two, three)::(P & Q & R & {})
+end
+
+function Meta:merge4<P, Q, R, S>(
+  one: (P & {})?,
+  two: (Q & {})?,
+  three: (R & {})?,
+  four: (S & {})?
+): P & Q & {}
+  return Meta:merge(one, two, three, four)::(P & Q & R & S & {})
 end
 
 export type AnyTable = {
