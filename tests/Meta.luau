@@ -1,7 +1,9 @@
+--!strict
+
 local describe = require("@lorry.testing/lib/describe")
 local Meta = require("@root/lib/Meta")
 
-describe("Meta Utils") (
+return describe("Meta Utils") (
   function (it)
     it("should provide ability to build indexed array") (
       function (check)
@@ -45,5 +47,3 @@ describe("Meta Utils") (
     )
   end
 )
-
-return {}

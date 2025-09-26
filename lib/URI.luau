@@ -4,7 +4,7 @@ local Meta = require("./Meta")
 
 local URI = {}
 
-export type URI = typeof(URI)
+export type URI = typeof(URI) & URIProps
 
 export type URIProps = {
   schema: string,
@@ -16,8 +16,6 @@ export type URIProps = {
   query: string?,
   fragment: string?,
 }
-
-export type URIImpl = URI & URIProps
 
 function URI:new(o: any): URI
   return Meta:type(o, self, "URI")
@@ -108,7 +106,7 @@ function URI:parse_jdbc(st: string): URI
 end
 
 function URI:userinfo(): string?
-  local this = self::URIImpl
+  local this = self::URI
   if this.username ~= nil and this.password ~= nil then
     return this.username .. ':' .. this.password
   elseif this.username ~= nil then
@@ -118,7 +116,7 @@ function URI:userinfo(): string?
 end
 
 function URI:host(): string?
-  local this = self::URIImpl
+  local this = self::URI
   if this.hostname ~= nil and this.port ~= nil then
     return this.hostname .. ':' .. this.port
   elseif this.hostname ~= nil then
@@ -140,7 +138,7 @@ function URI:authority(): string?
 end
 
 function URI:query_params(): {[string]: any}
-  local this = self::URIImpl
+  local this = self::URI
   local result: { [string]: any } = {}
   if this.query ~= nil then
     for item in this.query:gmatch("([^&]+)") do
@@ -156,7 +154,7 @@ function URI:query_params(): {[string]: any}
 end
 
 function URI:format(): string
-  local this = self::URIImpl
+  local this = self::URI
   local st = ''
   if this.schema ~= nil then
     st ..= this.schema .. ':'
@@ -178,71 +176,71 @@ function URI:format(): string
 end
 
 function URI:format_nested(schema: string): string
-  local this = self::URIImpl
+  local this = self::URI
   return schema .. ':' .. this:format()
 end
 
 function URI:format_jdbc(): string
-  local this = self::URIImpl
+  local this = self::URI
   return this:format_nested('jdbc')
 end
 
 function URI:with_schema(schema: string)
-  local this = self::URIImpl
+  local this = self::URI
   this.schema = schema
   return this
 end
 
 function URI:override_schema(overrides: {[string]: string}): URI
-  local this = self::URIImpl
+  local this = self::URI
   this.schema = overrides[this.schema] or this.schema
   return this
 end
 
 function URI:with_port(port: string): URI
-  local this = self::URIImpl
+  local this = self::URI
   this.port = port
   return this
 end
 
 function URI:with_hostname(hostname: string): URI
-  local this = self::URIImpl
+  local this = self::URI
   this.hostname = hostname
   return this
 end
 
 function URI:with_path(path: string?): URI
-  local this = self::URIImpl
+  local this = self::URI
   this.path = path
   return this
 end
 
 function URI:with_query(query: string?): URI
-  local this = self::URIImpl
+  local this = self::URI
   this.query = query
   return this
 end
 
 function URI:with_fragment(fragment: string?): URI
-  local this = self::URIImpl
+  local this = self::URI
   this.fragment = fragment
   return this
 end
 
 function URI:with_username(username: string?): URI
-  local this = self::URIImpl
+  local this = self::URI
   this.username = username
   return this
 end
 
 function URI:with_password(password: string?): URI
-  local this = self::URIImpl
+  local this = self::URI
   this.password = password
   return this
 end
 
 function URI:resolve(subpath: string): URI
-  local this = self::URIImpl
+  local this = self::URI
   if subpath == nil then
     return this:with_path(nil)
   end

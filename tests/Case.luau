@@ -1,7 +1,9 @@
+--!strict
+
 local describe = require("@lorry.testing/lib/describe")
 local Case = require("@root/lib/Case")
 
-describe("Case Utils") (
+return describe("Case Utils") (
   function (it)
     it("should provide ability to convert strings in snake case") (
       function (check)
@@ -30,5 +32,3 @@ describe("Case Utils") (
     )
   end
 )
-
-return {}

@@ -1,7 +1,9 @@
+--!strict
+
 local describe = require("@lorry.testing/lib/describe")
 local URI = require("@root/lib/URI")
 
-describe("URI Utils") (
+return describe("URI Utils") (
   function (it)
     it("should provide ability parse URI") (
       function (check)
@@ -19,7 +21,7 @@ describe("URI Utils") (
 
     it("should provide ability to format URIs") (
       function (check)
-        local examples = {
+        local examples: {[string]: string} = {
           ['http://localhost'] = 'http://localhost',
           ['http://localhost:8080'] = 'http://localhost:8080',
           ['http://localhost:8080/path/to/route'] = 'http://localhost:8080/path/to/route',
@@ -53,5 +55,3 @@ describe("URI Utils") (
     )
   end
 )
-
-return {}

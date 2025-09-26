@@ -1,9 +1,11 @@
+--!strict
+
 local describe = require("@lorry.testing/lib/describe")
 local Meta = require("@root/lib/Meta")
 local Object = require("@root/lib/Object")
 local Table = require("@root/lib/Table")
 
-describe("Object Utils") (
+return describe("Object Utils") (
   function (it)
     it("should provide spread factory method") (
       function (check)
@@ -16,5 +18,3 @@ describe("Object Utils") (
     )
   end
 )
-
-return {}

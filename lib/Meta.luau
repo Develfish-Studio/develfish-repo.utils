@@ -145,4 +145,17 @@ function Meta:map_keys<K, V, R>(dict: {[K]: V}, mapper: (k: K, v: V) -> R): {[R]
   return result
 end
 
+function Meta:associate<K, V, NK>(dict: {[K]: V}, compute_key: (v: V, k: K) -> NK): {[NK]: V}
+  local result: {[NK]: V} = Meta:table {}
+  for k, v in dict do
+    local nk = compute_key(v, k)
+    result[nk] = v
+  end
+  return result
+end
+
+function Meta:associate_by<K, V, NK>(dict: {[K]: V}, field: string): {[NK]: V}
+  return Meta:associate(dict, function (v, k) return ((v::unknown)::{})[field] end)
+end
+
 return Meta

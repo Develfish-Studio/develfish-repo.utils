@@ -1,8 +1,10 @@
+--!strict
+
 local describe = require("@lorry.testing/lib/describe")
 local Meta = require("@root/lib/Meta")
 local Array = require("@root/lib/Array")
 
-describe("Array Utils") (
+return describe("Array Utils") (
   function (it)
     it("should provide ability to compare arrays") (
       function (check)
@@ -33,5 +35,3 @@ describe("Array Utils") (
     )
   end
 )
-
-return {}

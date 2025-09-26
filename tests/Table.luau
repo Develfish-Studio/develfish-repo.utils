@@ -1,8 +1,10 @@
+--!strict
+
 local describe = require("@lorry.testing/lib/describe")
 local Meta = require("@root/lib/Meta")
 local Table = require("@root/lib/Table")
 
-describe("Table Utils") (
+return describe("Table Utils") (
   function (it)
     it("should provide ability to compare tables") (
       function (check)
@@ -47,5 +49,3 @@ describe("Table Utils") (
     )
   end
 )
-
-return {}

@@ -1,7 +1,9 @@
+--!strict
+
 local describe = require("@lorry.testing/lib/describe")
 local Path = require("@root/lib/Path")
 
-describe("Path Utils") (
+return describe("Path Utils") (
   function (it)
     it("should provide ability to parse path") (
       function (check)
@@ -33,5 +35,3 @@ describe("Path Utils") (
     )
   end
 )
-
-return {}

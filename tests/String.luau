@@ -1,7 +1,9 @@
+--!strict
+
 local describe = require("@lorry.testing/lib/describe")
 local String = require("@root/lib/String")
 
-describe("String Utils") (
+return describe("String Utils") (
   function (it)
     it("should provide ability to split string by separator") (
       function (check)
@@ -11,5 +13,3 @@ describe("String Utils") (
     )
   end
 )
-
-return {}
