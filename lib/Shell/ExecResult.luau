@@ -20,22 +20,22 @@ function ExecResult:new(o: ExecResultProps): ExecResult
   return Meta:type(o, self, 'Shell.ExecResult')
 end
 
-function ExecResult:stdout_json<T>(): T
+function ExecResult:parse_json_stdout<T>(): T
   local this = self::ExecResult
   return Json:parse(this.stdout)
 end
 
-function ExecResult:stdout_yaml<T>(): T
+function ExecResult:parse_yaml_stdout<T>(): T
   local this = self::ExecResult
   return Yaml:parse(this.stdout)
 end
 
-function ExecResult:stderr_json<T>(): T
+function ExecResult:parse_json_stderr<T>(): T
   local this = self::ExecResult
   return Json:parse(this.stderr)
 end
 
-function ExecResult:stderr_yaml<T>(): T
+function ExecResult:parse_yaml_stderr<T>(): T
   local this = self::ExecResult
   return Yaml:parse(this.stderr)
 end

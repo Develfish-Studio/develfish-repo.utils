@@ -13,6 +13,3 @@ luau:
 dependencies:
   lorry.testing:
     uri: git@github.com:Develfish-Studio/lorry.testing.git
-actions:
-  test:
-    path: actions/test
